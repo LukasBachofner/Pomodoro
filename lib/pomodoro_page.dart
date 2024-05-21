@@ -80,12 +80,72 @@ class _PomodoroPageState extends State<PomodoroPage> {
           ),
         ],
       ),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {},
-          child: Text('Pomodoro Page ${currentDuration.inSeconds}'),
+      body: SizedBox(
+        width: double.infinity,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            PomodoroTime(duration: currentDuration),
+            ElevatedButton(
+              onPressed: () {},
+              child: Text('Pomodoro Page ${currentDuration.inMinutes}'),
+            ),
+          ],
         ),
       ),
     );
+  }
+}
+
+class PomodoroTime extends StatelessWidget {
+  const PomodoroTime({
+    super.key,
+    required this.duration,
+  });
+
+  final Duration duration;
+
+  String formatDuration(Duration duration) {
+    final minutes = duration.inMinutes.remainder(60).toString().padLeft(2, '0');
+    final seconds = duration.inSeconds.remainder(60).toString().padLeft(2, '0');
+    return '$minutes:$seconds';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: Colors.black,
+          width: 2,
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Text(
+          formatDuration(duration),
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.displaySmall,
+        ),
+      ),
+    );
+  }
+}
+
+class PomodoroButtons extends StatelessWidget {
+  const PomodoroButtons({
+    super.key,
+    required this.isRunning,
+    required this.runningChanged,
+    required this.addDuration,
+  });
+
+  final bool isRunning;
+  final Function(bool) runningChanged;
+  final Function(Duration) addDuration;
+
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
   }
 }
